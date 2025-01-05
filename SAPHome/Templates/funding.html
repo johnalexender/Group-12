@@ -1,0 +1,80 @@
+<!-- SAP/templates/SAP/funding.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Funding Page</title>
+  </head>
+  <body>
+    <a href="{% url 'home' %}">Firm Home</a>
+
+    <!-- Link to the home page -->
+
+    <form method="POST" action="{% url 'funding' %}">
+      {% csrf_token %}
+      <div>
+        <label for="member_name">Member Name:</label>
+        <input
+          type="text"
+          id="member_name"
+          name="member_name"
+          placeholder="member_name"
+          required
+        />
+      </div>
+
+      <div>
+        <label for="member_cpm">Member CPM:</label>
+        <input
+          type="text"
+          id="member_cpm"
+          name="member_cpm"
+          placeholder="member_cpm"
+          required
+        />
+      </div>
+
+      <div>
+        <label for="investment_amount">Investment:</label>
+        <input
+          type="text"
+          name="investment_amount"
+          id="investment_amount"
+          required
+        />
+      </div>
+
+      <button type="submit">Record Investment</button>
+    </form>
+    <h2>Summary of Share Capital</h2>
+    <!-- Table dsiplaying memeber investment-->
+    <table border="1">
+      <thead>
+        <th>Name</th>
+        <th>CPM</th>
+        <th>Total Investment</th>
+      </thead>
+
+      <!--loop to each memeber in the memeber list-->
+      {% for member in member_list %}
+      <tr>
+        <td>
+          <a href="{% url 'member_info' member.member_name %}"
+            >{{ member.member_name }}</a
+          >
+        </td>
+        <td>{{ member.member_cpm }}</td>
+        <td>{{ member.investment_amount }}</td>
+      </tr>
+      {% empty %}
+      <!-- Message to display if there are no investments available -->
+      <tr>
+        <td colspan="3">No investments available</td>
+      </tr>
+      {% endfor %}
+      <tr>
+        <td colspan="2">Total Capital</td>
+        <td>{{ total_investment }}</td>
+      </tr>
+    </table>
+  </body>
+</html>
